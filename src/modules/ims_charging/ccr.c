@@ -294,10 +294,10 @@ AAAMessage *Ro_write_CCR_avps(AAAMessage *ccr, Ro_CCR_t *x)
 		if(!ro_add_destination_realm_avp(ccr, x->destination_realm))
 			goto error;
 	}
-
-	if(!cdp_avp->base.add_Accounting_Record_Type(
-			   &(ccr->avpList), x->acct_record_type))
-		goto error;
+    // accounting type isn't supported in our solution 
+	//if(!cdp_avp->base.add_Accounting_Record_Type(
+	//		   &(ccr->avpList), x->acct_record_type))
+	//	goto error;
 	if(!cdp_avp->base.add_Accounting_Record_Number(
 			   &(ccr->avpList), x->acct_record_number))
 		goto error;
