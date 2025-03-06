@@ -259,18 +259,17 @@ AAAMessage *Ro_write_CCR_avps(AAAMessage *ccr, Ro_CCR_t *x)
 	LM_DBG("write all CCR AVPs\n");
 
 	// origin host and origin realm might be already present in the ccr message 
-	
-	bool origin_host_exists = false
-	bool origin_realm_exists = false
+	int  origin_host_exists  = 0;
+	int  origin_realm_exists = 0;
 	for(avp = ccr->avpList.head; avp; avp = avp->next) {
 		if(avp->code == 264){
-			origin_host_exists = true;
+			origin_host_exists = 1;
 			break;
 		}
 	}
 	for(avp = ccr->avpList.head; avp; avp = avp->next) {
 		if(avp->code == 296){
-			origin_realm_exists = true;
+			origin_realm_exists = 1;
 			break;
 		}
 	}
