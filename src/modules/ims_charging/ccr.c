@@ -256,6 +256,7 @@ AAAMessage *Ro_write_CCR_avps(AAAMessage *ccr, Ro_CCR_t *x)
 		return 0;
 	LM_DBG("write all CCR AVPs\n");
 
+	// origin host and origin realm might be already present in the ccr message 
 	if(x->origin_host.s && x->origin_host.len > 0) {
 		if(!cdp_avp->base.add_Origin_Host(&(ccr->avpList), x->origin_host, 0))
 			goto error;
