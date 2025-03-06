@@ -252,19 +252,40 @@ error:
 AAAMessage *Ro_write_CCR_avps(AAAMessage *ccr, Ro_CCR_t *x)
 {
 
+	AAA_AVP *avp;
+
 	if(!ccr)
 		return 0;
 	LM_DBG("write all CCR AVPs\n");
 
 	// origin host and origin realm might be already present in the ccr message 
-	if(x->origin_host.s && x->origin_host.len > 0) {
-		if(!cdp_avp->base.add_Origin_Host(&(ccr->avpList), x->origin_host, 0))
-			goto error;
+	
+	bool origin_host_exists = false
+	bool origin_realm_exists = false
+	for(avp = ccr->avpList.head; avp; avp = avp->next) {
+		if(avp->code == 264){
+			origin_host_exists = true;
+			break;
+		}
+	}
+	for(avp = ccr->avpList.head; avp; avp = avp->next) {
+		if(avp->code == 296){
+			origin_realm_exists = true;
+			break;
+		}
+	}
+	if(!origin_host_exists){
+		if(x->origin_host.s && x->origin_host.len > 0) {
+			if(!cdp_avp->base.add_Origin_Host(&(ccr->avpList), x->origin_host, 0))
+				goto error;
+		}
 	}
 
-	if(x->origin_realm.s && x->origin_realm.len > 0) {
-		if(!cdp_avp->base.add_Origin_Realm(&(ccr->avpList), x->origin_realm, 0))
-			goto error;
+	if(!origin_realm_exists){
+		if(x->origin_realm.s && x->origin_realm.len > 0) {
+			if(!cdp_avp->base.add_Origin_Realm(&(ccr->avpList), x->origin_realm, 0))
+				goto error;
+		}
 	}
 
 	if(x->destination_host.s && x->destination_host.len > 0) {
