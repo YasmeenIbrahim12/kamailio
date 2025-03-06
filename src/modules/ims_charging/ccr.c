@@ -264,15 +264,12 @@ AAAMessage *Ro_write_CCR_avps(AAAMessage *ccr, Ro_CCR_t *x)
 	for(avp = ccr->avpList.head; avp; avp = avp->next) {
 		if(avp->code == 264){
 			origin_host_exists = 1;
-			break;
 		}
-	}
-	for(avp = ccr->avpList.head; avp; avp = avp->next) {
 		if(avp->code == 296){
 			origin_realm_exists = 1;
-			break;
 		}
 	}
+
 	if(!origin_host_exists){
 		if(x->origin_host.s && x->origin_host.len > 0) {
 			if(!cdp_avp->base.add_Origin_Host(&(ccr->avpList), x->origin_host, 0))
